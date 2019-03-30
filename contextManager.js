@@ -1,5 +1,5 @@
 
-class ContextBuilder{
+class ContextManager{
 	constructor(config, entities) {
 		this.config = config;
 		this.entities = entities;
@@ -27,8 +27,14 @@ class ContextBuilder{
 
 	onCreateContext(context){
 		const entity = this.getCurrentEntity();
-		Object.values(entity.annotations).forEach((annotation)=>{
 
+		Object.values(this.config.background).forEach((background)=>{
+			const conf = background;
+			if(conf.onCreateContext)
+				conf.onCreateContext(context, entity)
+		});		
+
+		Object.values(entity.annotations).forEach((annotation)=>{
 			const conf = this.config.entity.annotations[annotation.name];
 			if(conf.onCreateContext)
 				conf.onCreateContext(context, entity, annotation.params)
@@ -43,11 +49,10 @@ class ContextBuilder{
 					conf.onCreateContext(context, attribute, annotation.params)
 
 			});
-
 		});
 
 
 	}
 }
 
-module.exports = ContextBuilder;
+module.exports = ContextManager;

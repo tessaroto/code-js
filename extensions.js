@@ -4,6 +4,8 @@ const path = require('path');
 class Extensions{
 	constructor(config) {
 		this.config = config || {};
+		this.background = this.background || {};
+
 	}
 
 	async load(extPath) {
@@ -18,16 +20,22 @@ class Extensions{
 	async loadExtension(file){
 		const extension = require(file);
 
-		await extension.scope.forEach(async (scope)=>{
-			
-			this.config[scope].annotations[extension.name] = {
-				params: extension.params || {},
+		if (extension.type == "annotation"){
+			await extension.scope.forEach(async (scope)=>{		
+				this.config[scope].annotations[extension.name] = {
+					params: extension.params || {},
+					onCreateContext: extension.onCreateContext || null
+				};
+
+			});	
+		}
+		else{
+
+			this.config.background[extension.name] = {
 				onCreateContext: extension.onCreateContext || null
 			};
-
-		});
+		}
 	}
-
 }
 
 module.exports = Extensions;

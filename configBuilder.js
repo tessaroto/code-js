@@ -6,6 +6,7 @@ class ConfigBuilder{
     this.attribute = this.attribute || {};
     this.attribute.annotations = this.attribute.annotations || {};
     this.attribute.types = ["Int", "String", "Decimal"]
+    this.background = {};
 	}
 
 	config() {

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Rafael Tessaroto",
   "license": "MIT",
   "dependencies": {
     "dsl-model": "^1.1.0",

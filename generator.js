@@ -1,30 +1,30 @@
-// const { ContextBuilder, ConfigBuilder, Extensions } = require("./");
-const ContextBuilder = require("./contextBuilder");
+
+const path = require("path");
+const File = require("./utils/file");
+const Directory = require("./utils/directory");
+const ContextManager = require("./contextManager");
 const ConfigBuilder = require("./configBuilder");
 const Extensions = require("./extensions");
 const TemplateBuilder = require("./templateBuilder");
 const { EntityBuilder } = require("dsl-model");
 
 class Generator {
-	constructor({ modelPath, extensionPath, templatePath }) {
-		this.modelPath = modelPath
-		this.extensionPath = extensionPath;
-		this.templatePath = templatePath;
+	constructor() {
 		this.config = new ConfigBuilder();
 		this.extensions = new Extensions(this.config);
 		this.entityBuilder = new EntityBuilder(this.config);
 		this.templateBuilder = new TemplateBuilder(this.config);
 	}
 
-	async run(bundle) {
-		await this.extensions.load(this.extensionPath)
-		await this.templateBuilder.load(this.templatePath);
+	async run({ model, extension, template, bundle, output }) {
+		await this.extensions.load(extension.path)
+		await this.templateBuilder.load(template.path);
 
-		const entities = await this.entityBuilder.buildFrom(this.modelPath);
-		const contextBuilder = new ContextBuilder(this.config, entities);
+		const entities = await this.entityBuilder.buildFrom(model.path);
+		const contextManager = new ContextManager(this.config, entities);
 
-		while(contextBuilder.next()){
-			const context = contextBuilder.create();
+		while(contextManager.next()){
+			const context = contextManager.create();
 
 			for(const i in bundle){
 				const templateName = bundle[i].template;
@@ -32,12 +32,20 @@ class Generator {
 
 				const {result, saveTo} = await this.templateBuilder.run(templateName, context, saveToTemplate);
 
-				console.log(`\n---------- ${context.entity.name}: ${saveTo}  ----------`)
-				console.log(result);
+				await this.save({result, saveTo, output});
 			}
-
 		}
 	}
+
+	async save({result, saveTo, output}){
+		const fullPath = path.join(output, saveTo);
+		const pathDir = path.dirname(fullPath);
+		await Directory.create(pathDir);
+		await File.write(fullPath, result);
+		console.log(`File was created ${fullPath}`);
+
+	}
+
 }
 
 module.exports = Generator;
