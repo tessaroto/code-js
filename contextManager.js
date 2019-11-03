@@ -1,19 +1,20 @@
 
 class ContextManager{
-	constructor(config, entities) {
+	constructor(config, entities, entityFilter) {
 		this.config = config;
 		this.entities = entities;
+		this.entityFilter = entityFilter;
 		this.entityNames = Object.keys(entities);
 		this.currentIndex = -1;
 
 	}
 
 	next() {
-		return this.entityNames.length-1 > this.currentIndex++;
+		return this.entityFilter.length-1 > this.currentIndex++;
 	}
 
 	getCurrentEntity() {
-		return this.entities[this.entityNames[this.currentIndex]];
+		return this.entities[this.entityFilter[this.currentIndex]];
 	}
 
 	create() {

@@ -1,6 +1,6 @@
 {
   "name": "coder-js",
-  "version": "1.1.1",
+  "version": "1.2.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,11 +9,21 @@
   "author": "Rafael Tessaroto",
   "license": "MIT",
   "dependencies": {
-    "dsl-model": "^1.1.0",
-    "velocityjs": "^1.1.3"
+    "dsl-js": "^1.1.2",
+    "velocityjs": "^1.1.3",
+    "yargs": "^13.2.2"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/tessaroto/coder-js.git"
-  }
+  },
+  "files": [
+    "utils",
+    "configBuilder.js",
+    "contextManager.js",
+    "extensions.js",
+    "generator.js",
+    "index.js",
+    "templateBuilder.js"
+  ]
 }

@@ -5,7 +5,7 @@ class ConfigBuilder{
     this.entity.annotations = this.entity.annotations || {};
     this.attribute = this.attribute || {};
     this.attribute.annotations = this.attribute.annotations || {};
-    this.attribute.types = ["Int", "String", "Decimal"]
+    this.attribute.types = ["Int", "String", "Float", "Boolean"]
     this.background = {};
 	}
 

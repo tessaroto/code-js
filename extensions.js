@@ -10,11 +10,11 @@ class Extensions{
 
 	async load(extPath) {
 		const fullPath = path.join(process.cwd(), extPath);
-    const files = await File.list(fullPath, ".extension");
+	    const files = await File.list(fullPath, ".extension");
 
-    await files.forEach(this.loadExtension.bind(this));
+	    await files.forEach(this.loadExtension.bind(this));
 
-    return this.config;
+	    return this.config;
 	}
 
 	async loadExtension(file){
